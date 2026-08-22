@@ -11,4 +11,17 @@ The current implementation focuses on:
 - Identifying high-risk assets
 - Generating basic maintenance recommendations
 
+Problem 
+Industrial organizations often manage machinery reactively: a machine
+fails, maintenance is performed, and replacement decisions are made
+manually.
+This can lead to:
+
+1] Unplanned downtime
+2] High maintenance costs
+3] Poor visibility into machine health
+4] Premature or delayed replacement
+5] Difficulty understanding which assets need attention first
+
 - Project Status - Under development
+- 
