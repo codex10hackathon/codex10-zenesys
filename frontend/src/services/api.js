@@ -121,14 +121,30 @@ export async function analyzeMachine({ machine_type, machine_id, previous_mainte
       ambient_temperature: ambient_temp,
     }),
   })
-  const machine = await apiRequest(`/machines/${response.machine_id}`)
-  const nextMaintenanceDate = previous_maintenance_date
-    ? new Date(new Date(previous_maintenance_date).getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
-    : null
+
+  const backendPrediction = response.prediction || response
+
   return {
-    ...normalizeMachine(machine),
+    machine_id: machine_id || String(response.machine_id),
+    machine_type,
+    ...backendPrediction,
+    failure_risk: backendPrediction.failure_risk,
+    failure_risk_percentage: backendPrediction.failure_risk_percentage,
+    remaining_useful_life: backendPrediction.remaining_useful_life,
+    risk_score: backendPrediction.risk_score,
+    risk_level: backendPrediction.risk_level,
+    recommendation: backendPrediction.recommendation,
+    replacement_flag: backendPrediction.replacement_flag,
+    reason: backendPrediction.reason,
+    vibration_rms,
+    temperature_motor,
+    current_phase_avg,
+    pressure_level,
+    rpm,
+    operating_mode,
+    ambient_temp,
     previous_maintenance_date,
-    next_maintenance_date: nextMaintenanceDate,
+    backend_machine_id: response.machine_id,
   }
 }
 

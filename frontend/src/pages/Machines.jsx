@@ -5,8 +5,8 @@ import Layout from '../components/Layout'
 import Card from '../components/Card'
 import { RiskBadge } from '../components/Badges'
 import { useMachines } from '../hooks/useMachines'
-import { getMaintenancePrediction, analyzeMachine } from '../services/api'
-import { formatDateDisplay, formatNumber } from '../utils/format'
+import { getMachineById, getMaintenancePrediction, analyzeMachine } from '../services/api'
+import { formatNumber } from '../utils/format'
 
 const MACHINE_TYPES = ['CNC', 'Pump', 'Compressor', 'Robotic Arm']
 
@@ -33,6 +33,7 @@ export default function Machines() {
   const [searched, setSearched] = useState(false)
   const [error, setError] = useState('')
   const [maintenancePrediction, setMaintenancePrediction] = useState(null)
+  const [searchedMachine, setSearchedMachine] = useState(null)
   const [maintenanceLoading, setMaintenanceLoading] = useState(false)
   const [showAddMachine, setShowAddMachine] = useState(false)
   const [prediction, setPrediction] = useState(null)
@@ -48,13 +49,13 @@ export default function Machines() {
     rpm: '',
     operating_mode: 'RUNNING',
     ambient_temp: '',
-    previous_maintenance_date: '',
   })
 
   const handleSearch = async (e) => {
     e.preventDefault()
     setError('')
     setSearched(true)
+    setSearchedMachine(null)
     setMaintenancePrediction(null)
 
     if (!machineType || !machineId) {
@@ -73,7 +74,11 @@ export default function Machines() {
 
     setMaintenanceLoading(true)
     try {
-      const prediction = await getMaintenancePrediction(machine.id)
+      const [details, prediction] = await Promise.all([
+        getMachineById(machine.id),
+        getMaintenancePrediction(machine.id),
+      ])
+      setSearchedMachine(details)
       setMaintenancePrediction(prediction)
     } catch (predictionError) {
       setError(predictionError.message)
@@ -81,10 +86,6 @@ export default function Machines() {
       setMaintenanceLoading(false)
     }
   }
-
-  const searchedMachine = machines.find(
-    (m) => m.machine_type === machineType && m.id === machineId
-  )
 
   const updateNewMachine = (field, value) => {
     setNewMachine((current) => ({ ...current, [field]: value }))
@@ -137,7 +138,6 @@ export default function Machines() {
             <div className="grid gap-4 md:grid-cols-3">
               {[
                 ['machine_id', 'Machine ID', 'text', 'e.g., CNC-2334'],
-                ['previous_maintenance_date', 'Last Maintenance Date', 'date', ''],
                 ['vibration_rms', 'Vibration RMS', 'number', 'mm/s'],
                 ['temperature_motor', 'Motor Temperature', 'number', '°C'],
                 ['current_phase_avg', 'Current Phase Avg', 'number', 'A'],
@@ -326,18 +326,6 @@ export default function Machines() {
               <p className="text-[12.5px] text-[var(--text-muted)]">Fetching maintenance prediction…</p>
             ) : maintenancePrediction ? (
               <div className="space-y-3">
-                <div className="rounded border border-[var(--border-subtle)] bg-[var(--bg-app)] px-3 py-3">
-                  <p className="text-[11px] uppercase tracking-wide text-[var(--text-muted)]">Last Maintenance</p>
-                  <p className="mt-1 text-[13px] font-semibold text-[var(--text-primary)]">
-                    {formatDateDisplay(maintenancePrediction.last_maintenance_date)}
-                  </p>
-                </div>
-                <div className="rounded border border-[var(--border-subtle)] bg-[var(--bg-app)] px-3 py-3">
-                  <p className="text-[11px] uppercase tracking-wide text-[var(--text-muted)]">Next Due Date</p>
-                  <p className="mt-1 text-[13px] font-semibold text-[var(--text-primary)]">
-                    {formatDateDisplay(maintenancePrediction.next_maintenance_date)}
-                  </p>
-                </div>
                 <div
                   className={`rounded border px-3 py-3 ${
                     maintenancePrediction.maintenance_required
@@ -387,13 +375,13 @@ export default function Machines() {
               <ParameterItem
                 icon={Gauge}
                 label="Pressure Level"
-                value={searchedMachine.pressure_level != null ? formatNumber(searchedMachine.pressure_level, 1) : 'N/A'}
+                value={searchedMachine.pressure_level != null ? formatNumber(searchedMachine.pressure_level, 1) : null}
                 unit={searchedMachine.pressure_level != null ? 'bar' : ''}
               />
               <ParameterItem
                 icon={RotateCw}
                 label="RPM"
-                value={searchedMachine.rpm != null ? Number(searchedMachine.rpm).toLocaleString('en-IN') : 'N/A'}
+                value={searchedMachine.rpm != null ? Number(searchedMachine.rpm).toLocaleString('en-IN') : null}
                 unit=""
               />
               <ParameterItem
