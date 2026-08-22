@@ -102,6 +102,7 @@ The current dataset contains approximately 24,000 industrial machinery
 records.
 
 ## Frontend Project Structure
+
 frontend/
 ├── package.json
 ├── vite.config.js
@@ -158,15 +159,16 @@ frontend/
     └── index.css
 
 ## Frontend Modules
-Dashboard — Overall asset health and risk overview.
-Machines — Search and select individual machines.
-Machine Profile — Detailed machine condition, predictions, RUL, and recommendations.
-Analytics — Sensor trends and machine performance analytics.
-Maintenance — Maintenance history and recommended actions.
-Lifecycle — Asset lifecycle information and decisions.
-Resale — Machine resale/replace analysis.
-Copilot — AI-powered machine and lifecycle assistant.
-Services — Communication with backend APIs.
-Context — Global authentication and selected-machine state.
+
+- **Dashboard** — Overall asset health, machine status, risk distribution, and key asset metrics.
+- **Machines** — Search, filter, and select individual machines for detailed analysis.
+- **Machine Profile** — Displays machine information, operating conditions, failure probability, RUL, risk level, failure type, repair cost, and AI recommendations.
+- **Analytics** — Visualizes sensor readings, machine performance, failure-risk trends, and RUL trends.
+- **Maintenance** — Displays maintenance status, maintenance history, upcoming maintenance requirements, and recommended actions.
+- **Lifecycle** — Tracks the machine lifecycle and provides insights for maintenance, repair, upgrade, replacement, or retirement decisions.
+- **Resale** — Provides machine resale and replacement analysis based on condition, RUL, repair cost, and lifecycle information.
+- **Copilot** — AI-powered assistant for machine-specific analysis, maintenance questions, and lifecycle decisions.
+- **Services** — Handles communication between the frontend and backend APIs for machines, predictions, maintenance, lifecycle, resale, and AI services.
+- **Context** — Manages global application state, including authentication and the currently selected machine.
 - Project Status - Under development
 - 
