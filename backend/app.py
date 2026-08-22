@@ -60,7 +60,11 @@ CORS(app)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-MODEL_DIR = os.path.join(BASE_DIR, "models")
+MODEL_DIR = os.path.join(
+    BASE_DIR,
+    "..",
+    "models"
+)
 
 FAILURE_MODEL_PATH = os.path.join(
     MODEL_DIR,
@@ -1100,6 +1104,17 @@ def health():
 # ======================================================================
 # RUN SERVER
 # ======================================================================
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({
+        "status": "running",
+        "message": "Intelligent Asset Lifecycle Management API",
+        "endpoints": [
+            "/api/machines",
+            "/api/machines/<machine_id>"
+        ]
+    }), 200
+
 
 if __name__ == "__main__":
 
