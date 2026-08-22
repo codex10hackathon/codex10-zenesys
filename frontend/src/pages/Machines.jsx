@@ -11,10 +11,12 @@ import { formatDateDisplay, formatNumber } from '../utils/format'
 const MACHINE_TYPES = ['CNC', 'Pump', 'Compressor', 'Robotic Arm']
 
 function ParameterItem({ icon: Icon, label, value, unit }) {
+  if (value === null || value === undefined || value === '—') return null
+
   return (
     <div className="flex items-center justify-between border-b border-[var(--border-subtle)] py-2.5 last:border-0">
       <div className="flex items-center gap-2">
-        <Icon size={14} strokeWidth={2} className="text-[var(--text-muted)]" />
+        {Icon && <Icon size={14} strokeWidth={2} className="text-[var(--text-muted)]" />}
         <span className="text-[12px] text-[var(--text-secondary)]">{label}</span>
       </div>
       <span className="text-[12.5px] font-semibold text-[var(--text-primary)]">
@@ -212,6 +214,27 @@ export default function Machines() {
             <RiskBadge risk={prediction.risk_level} />
             <span className="text-[12.5px] font-semibold text-[var(--text-secondary)]">{prediction.recommendation}</span>
           </div>
+          <div className="mt-4 grid gap-3 border-t border-[var(--border-subtle)] pt-4 md:grid-cols-4">
+            {prediction.failure_risk != null && (
+              <ParameterItem label="Failure Risk" value={prediction.failure_risk} unit="probability" />
+            )}
+            {prediction.failure_risk_percentage != null && (
+              <ParameterItem label="Failure Risk" value={prediction.failure_risk_percentage} unit="%" />
+            )}
+            {prediction.remaining_useful_life != null && (
+              <ParameterItem label="Remaining Useful Life" value={prediction.remaining_useful_life} unit="hours" />
+            )}
+            {prediction.risk_score != null && <ParameterItem label="Risk Score" value={prediction.risk_score} unit="/100" />}
+            {prediction.replacement_flag != null && (
+              <ParameterItem label="Replacement Flag" value={prediction.replacement_flag ? 'Yes' : 'No'} unit="" />
+            )}
+          </div>
+          {prediction.reason && (
+            <div className="mt-4 rounded border border-[var(--border-subtle)] bg-[var(--bg-app)] px-4 py-3">
+              <p className="text-[11.5px] font-medium uppercase tracking-wide text-[var(--text-muted)]">Prediction Reason</p>
+              <p className="mt-1 text-[13px] leading-relaxed text-[var(--text-secondary)]">{prediction.reason}</p>
+            </div>
+          )}
         </Card>
       )}
 
