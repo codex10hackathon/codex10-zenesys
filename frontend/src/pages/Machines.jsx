@@ -5,8 +5,7 @@ import Layout from '../components/Layout'
 import Card from '../components/Card'
 import { RiskBadge } from '../components/Badges'
 import { useMachines } from '../hooks/useMachines'
-import { addMachine, getMaintenancePrediction } from '../services/machineService'
-import { analyzeMachine } from '../services/predictionService'
+import { getMaintenancePrediction, analyzeMachine } from '../services/api'
 import { formatDateDisplay, formatNumber } from '../utils/format'
 
 function ParameterItem({ icon: Icon, label, value, unit }) {
@@ -105,7 +104,6 @@ export default function Machines() {
         rpm: newMachine.rpm === '' ? null : Number(newMachine.rpm),
         ambient_temp: Number(newMachine.ambient_temp),
       }
-      await addMachine(machinePayload)
       const result = await analyzeMachine({
         ...machinePayload,
       })

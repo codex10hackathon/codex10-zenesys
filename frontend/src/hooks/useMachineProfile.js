@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { getMachineById } from '../services/machineService'
+import { getMachineById } from '../services/api'
 
 export function useMachineProfile(machineId) {
   const [machine, setMachine] = useState(null)

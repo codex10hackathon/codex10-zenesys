@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Loader2, ScanSearch } from 'lucide-react'
-import { analyzeMachine } from '../services/predictionService'
+import { analyzeMachine } from '../services/api'
 
 const MACHINE_TYPES = ['CNC', 'Pump', 'Compressor', 'Robotic Arm', 'Motor', 'Conveyor']
 

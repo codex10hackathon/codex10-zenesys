@@ -4,7 +4,7 @@ import { Info } from 'lucide-react'
 import Layout from '../components/Layout'
 import Card from '../components/Card'
 import { useMachines } from '../hooks/useMachines'
-import { getResaleValuation } from '../services/resaleService'
+import { getResaleValuation } from '../services/api'
 import { formatCurrency } from '../utils/format'
 
 export default function Resale() {

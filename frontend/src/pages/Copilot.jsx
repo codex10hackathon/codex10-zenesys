@@ -5,7 +5,7 @@ import Card from '../components/Card'
 import { RiskBadge } from '../components/Badges'
 import { useMachines } from '../hooks/useMachines'
 import { useMachineContext } from '../context/MachineContext'
-import { askCopilot, SUGGESTED_QUESTIONS } from '../services/copilotService'
+import { askCopilot, SUGGESTED_QUESTIONS } from '../services/api'
 import { formatNumber } from '../utils/format'
 
 export default function Copilot() {

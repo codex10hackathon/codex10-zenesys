@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { getMachines } from '../services/machineService'
+import { getMachines } from '../services/api'
 
 export function useMachines() {
   const [machines, setMachines] = useState([])

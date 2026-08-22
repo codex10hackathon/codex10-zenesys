@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Boxes } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
@@ -19,11 +18,8 @@ export default function Login() {
     <div className="flex min-h-screen w-full items-center justify-center bg-[var(--bg-app)] px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
-          <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-md bg-navy-800">
-            <Boxes size={22} className="text-white" strokeWidth={2} />
-          </div>
           <h1 className="text-[19px] font-semibold text-[var(--text-primary)]">AssetIQ</h1>
-          <p className="mt-1 text-[13px] text-[var(--text-secondary)]">Intelligent Asset Lifecycle Management</p>
+          <p className="mt-1 text-[13px] text-[var(--text-secondary)]"></p>
         </div>
 
         <form

@@ -4,7 +4,7 @@ import Layout from '../components/Layout'
 import Card from '../components/Card'
 import { RiskBadge } from '../components/Badges'
 import { useMachines } from '../hooks/useMachines'
-import { getLifecycle } from '../services/lifecycleService'
+import { getLifecycle } from '../services/api'
 import { formatCurrency, formatNumber } from '../utils/format'
 
 function StageTracker({ stages, currentIndex }) {
