@@ -8,6 +8,8 @@ import { useMachines } from '../hooks/useMachines'
 import { getMaintenancePrediction, analyzeMachine } from '../services/api'
 import { formatDateDisplay, formatNumber } from '../utils/format'
 
+const MACHINE_TYPES = ['CNC', 'Pump', 'Compressor', 'Robotic Arm']
+
 function ParameterItem({ icon: Icon, label, value, unit }) {
   return (
     <div className="flex items-center justify-between border-b border-[var(--border-subtle)] py-2.5 last:border-0">
@@ -46,8 +48,6 @@ export default function Machines() {
     ambient_temp: '',
     previous_maintenance_date: '',
   })
-
-  const machineTypes = [...new Set(machines.map((m) => m.machine_type))]
 
   const handleSearch = async (e) => {
     e.preventDefault()
@@ -134,7 +134,6 @@ export default function Machines() {
           <form onSubmit={handlePrediction} className="space-y-4">
             <div className="grid gap-4 md:grid-cols-3">
               {[
-                ['machine_type', 'Machine Type', 'text', 'e.g., CNC'],
                 ['machine_id', 'Machine ID', 'text', 'e.g., CNC-2334'],
                 ['previous_maintenance_date', 'Last Maintenance Date', 'date', ''],
                 ['vibration_rms', 'Vibration RMS', 'number', 'mm/s'],
@@ -157,6 +156,21 @@ export default function Machines() {
                   />
                 </label>
               ))}
+              <label className="block text-[12.5px] font-medium text-[var(--text-secondary)]">
+                <span className="mb-1.5 block">Machine Type</span>
+                <select
+                  required
+                  value={newMachine.machine_type}
+                  onChange={(e) => updateNewMachine('machine_type', e.target.value)}
+                  className="w-full rounded border border-[var(--border-strong)] bg-white px-3 py-2 text-[13px] outline-none focus-ring"
+                >
+                  <option value="">Select type</option>
+                  <option value="CNC">CNC</option>
+                  <option value="Pump">Pump</option>
+                  <option value="Compressor">Compressor</option>
+                  <option value="Robotic Arm">Robotic Arm</option>
+                </select>
+              </label>
               <label className="block text-[12.5px] font-medium text-[var(--text-secondary)]">
                 <span className="mb-1.5 block">Operating Mode</span>
                 <select
@@ -214,7 +228,7 @@ export default function Machines() {
                 className="w-full rounded border border-[var(--border-strong)] bg-white px-3 py-2.5 text-[13px] outline-none"
               >
                 <option value="">Select a type…</option>
-                {machineTypes.map((type) => (
+                {MACHINE_TYPES.map((type) => (
                   <option key={type} value={type}>
                     {type}
                   </option>
