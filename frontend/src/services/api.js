@@ -1,4 +1,4 @@
-import { MACHINES, findMachine, getMaintenanceRecords, getUpcomingMaintenance } from '../data/machines'
+import { MACHINES, findMachine, getUpcomingMaintenance } from '../data/machines'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
 
@@ -151,11 +151,6 @@ export async function askCopilot(machineId, question) {
     body: JSON.stringify({ question }),
   })
   return response.answer
-}
-
-export async function getRecords() {
-  await delay()
-  return getMaintenanceRecords()
 }
 
 export async function getUpcoming() {

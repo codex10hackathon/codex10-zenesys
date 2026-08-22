@@ -53,7 +53,6 @@ export default function Login() {
           </button>
         </form>
         <p className="mt-4 text-center text-[12px] text-[var(--text-muted)]">
-          Demo build — sign-in is simulated, no credentials are verified.
         </p>
       </div>
     </div>

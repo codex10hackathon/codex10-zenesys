@@ -169,37 +169,6 @@ export function getSensorHistory(machineId) {
   return points
 }
 
-export function getMaintenanceRecords() {
-  const types = ['Preventive', 'Corrective', 'Inspection', 'Overhaul']
-  const performers = ['R. Iyer', 'S. Mehta', 'A. Fernandes', 'K. Rao', 'External Vendor']
-  const records = []
-  MACHINES.forEach((m, idx) => {
-    const count = 2 + (idx % 3)
-    for (let i = 0; i < count; i++) {
-      const dAgo = 15 + i * 45 + (idx % 10)
-      records.push({
-        id: `${m.id}-MR-${i}`,
-        machine_id: m.id,
-        machine_type: m.machine_type,
-        date: formatDate(daysAgo(dAgo)),
-        type: i === 0 ? 'Preventive' : pick2(types, idx + i),
-        description:
-          i === 0
-            ? 'Scheduled preventive maintenance and lubrication check'
-            : 'Sensor recalibration and component inspection',
-        performed_by: performers[(idx + i) % performers.length],
-        cost: Math.round((3000 + ((idx * 733 + i * 211) % 18000)) / 100) * 100,
-        status: dAgo < 20 ? 'Completed' : 'Completed',
-      })
-    }
-  })
-  return records.sort((a, b) => new Date(b.date) - new Date(a.date))
-}
-
-function pick2(arr, seed) {
-  return arr[seed % arr.length]
-}
-
 export function getUpcomingMaintenance() {
   return MACHINES.filter((m) => m.maintenance_overdue || m.risk_level === 'HIGH' || m.risk_level === 'CRITICAL')
     .sort((a, b) => new Date(a.next_maintenance_date) - new Date(b.next_maintenance_date))

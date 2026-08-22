@@ -4,7 +4,6 @@ import {
   Settings2,
   Sparkles,
   Wrench,
-  Settings,
   LogOut,
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
@@ -63,12 +62,6 @@ export default function Sidebar() {
           </div>
         </div>
         <ul className="space-y-0.5">
-          <li>
-            <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-[13px] font-medium text-slate-300 hover:bg-white/5 hover:text-white focus-ring">
-              <Settings size={16} strokeWidth={2} />
-              Settings
-            </button>
-          </li>
           <li>
             <button
               onClick={logout}

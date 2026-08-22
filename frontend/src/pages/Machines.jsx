@@ -130,7 +130,7 @@ export default function Machines() {
       }
     >
       {showAddMachine && (
-        <Card title="Add Machine" subtitle="Enter machine parameters and request a backend prediction" className="mb-5">
+        <Card title="Add Machine">
           <form onSubmit={handlePrediction} className="space-y-4">
             <div className="grid gap-4 md:grid-cols-3">
               {[
