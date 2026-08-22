@@ -32,6 +32,7 @@ The system is designed to:
 6. Incorporate maintenance and repair-cost information into lifecycle decisions.
 7. Provide an AI assistant for machine-specific questions and lifecycle decisions.
 
+
 ## Project Structure
 
 ```text
@@ -54,8 +55,9 @@ codex10-zenesys/
 │   └── txt
 │
 └── README.md
+```
 
-##   Overall Workflow
+##Overall workflow
 
                     MACHINE DATA
                          │
@@ -93,8 +95,9 @@ codex10-zenesys/
           └──────────────┬──────────────┘
                          ▼
               Asset Lifecycle Decision
-             Maintain / Repair / Replace
-             
-
+                         │
+             ┌───────────┼───────────┐
+             ▼           ▼           ▼
+          Maintain     Repair     Replace
 - Project Status - Under development
 - 
