@@ -103,6 +103,7 @@ records.
 
 ## Frontend Project Structure
 
+```text
 frontend/
 ├── package.json
 ├── vite.config.js
