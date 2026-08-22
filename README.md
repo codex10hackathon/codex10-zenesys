@@ -71,7 +71,102 @@ The system is designed to:
                          ▼
               Asset Lifecycle Decision
              Maintain / Repair / Replace
+             
 
+## Failure Prediction
 
+The primary prediction target is:
+
+failure_within_24h
+
+The system predicts whether a machine is likely to experience a failure within the next 24 hours.
+
+The following classification models are implemented and compared:
+
+Logistic Regression
+Support Vector Machine (SVM)
+Decision Tree
+Random Forest
+
+The models are evaluated using:
+
+1] Accuracy
+2] Precision
+3] Recall
+4] F1 Score
+5] ROC-AUC
+
+## Dataset
+
+The current dataset contains approximately 24,000 industrial machinery
+records.
+
+## Frontend Project Structure
+frontend/
+├── package.json
+├── vite.config.js
+├── index.html
+├── README.md
+│
+└── src/
+    ├── assets/
+    │
+    ├── components/
+    │   ├── layout/
+    │   ├── dashboard/
+    │   ├── machines/
+    │   ├── analytics/
+    │   ├── maintenance/
+    │   ├── lifecycle/
+    │   ├── resale/
+    │   ├── copilot/
+    │   └── ui/
+    │
+    ├── pages/
+    │   ├── Login.jsx
+    │   ├── Dashboard.jsx
+    │   ├── Machines.jsx
+    │   ├── MachineProfile.jsx
+    │   ├── Analytics.jsx
+    │   ├── Maintenance.jsx
+    │   ├── Lifecycle.jsx
+    │   ├── Resale.jsx
+    │   └── Copilot.jsx
+    │
+    ├── services/
+    │   ├── api.js
+    │   ├── machineService.js
+    │   ├── predictionService.js
+    │   ├── maintenanceService.js
+    │   ├── lifecycleService.js
+    │   ├── resaleService.js
+    │   └── copilotService.js
+    │
+    ├── context/
+    │   ├── AuthContext.jsx
+    │   └── MachineContext.jsx
+    │
+    ├── data/
+    │   ├── machines.js
+    │   ├── maintenance.js
+    │   └── analytics.js
+    │
+    ├── hooks/
+    ├── utils/
+    ├── App.jsx
+    ├── main.jsx
+    └── index.css
+
+## Frontend Modules
+Dashboard — Overall asset health and risk overview.
+Machines — Search and select individual machines.
+Machine Profile — Detailed machine condition, predictions, RUL, and recommendations.
+Analytics — Sensor trends and machine performance analytics.
+Maintenance — Maintenance history and recommended actions.
+Lifecycle — Asset lifecycle information and decisions.
+Resale — Machine resale/replace analysis.
+Copilot — AI-powered machine and lifecycle assistant.
+Services — Communication with backend APIs.
+Context — Global authentication and selected-machine state.
 - Project Status - Under development
 - 
