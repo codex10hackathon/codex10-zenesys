@@ -64,24 +64,25 @@ CORS(app)
 # MODEL PATHS
 # ======================================================================
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-MODEL_DIR = os.path.join(
-    BASE_DIR,
-    "..",
-    "models"
-)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODELS_DIR = os.path.join(BASE_DIR, "models")
 
 FAILURE_MODEL_PATH = os.path.join(
-    MODEL_DIR,
+    MODELS_DIR,
     "random_forest_asset_failure_model.joblib"
 )
 
 RUL_MODEL_PATH = os.path.join(
-    MODEL_DIR,
+    MODELS_DIR,
     "random_forest_rul_model.joblib"
 )
 
+print("BASE DIR:", BASE_DIR)
+print("MODELS DIR:", MODELS_DIR)
+print("Failure model:", FAILURE_MODEL_PATH)
+print("Failure model exists:", os.path.exists(FAILURE_MODEL_PATH))
+print("RUL model:", RUL_MODEL_PATH)
+print("RUL model exists:", os.path.exists(RUL_MODEL_PATH))
 
 # ======================================================================
 # LOAD MODELS
@@ -1088,15 +1089,8 @@ def delete_machine(
 # POST /api/machines/<machine_id>/assistant
 # ======================================================================
 
-@app.route(
-    "/api/machines/<int:machine_id>/assistant",
-    methods=["POST"]
-)
+@app.route("/api/machines/<int:machine_id>/assistant", methods=["POST"])
 def ask_assistant(machine_id):
-
-    # --------------------------------------------------------------
-    # Find machine
-    # --------------------------------------------------------------
 
     machine = machines.get(machine_id)
 
@@ -1105,56 +1099,35 @@ def ask_assistant(machine_id):
             "error": "Machine not found"
         }), 404
 
-    # --------------------------------------------------------------
-    # Get user question
-    # --------------------------------------------------------------
-
-    data = request.get_json(
-        silent=True
-    ) or {}
+    data = request.get_json(silent=True) or {}
 
     question = data.get("question")
 
-    if (
-        not question
-        or not isinstance(question, str)
-        or not question.strip()
-    ):
+    if not question or not isinstance(question, str):
         return jsonify({
             "error": "Question is required"
         }), 400
 
-    # --------------------------------------------------------------
-    # Send machine context + user question to Gemini
-    # --------------------------------------------------------------
-
     try:
         answer = ask_maintenance_assistant(
             machine=machine,
-            question=question.strip()
+            question=question
         )
 
         return jsonify({
             "machine_id": machine_id,
-            "question": question.strip(),
-            "answer": answer,
-            "status": "success"
+            "question": question,
+            "answer": answer
         }), 200
-
-    except ValueError as e:
-
-        return jsonify({
-            "error": str(e)
-        }), 500
 
     except Exception as e:
 
-        print("Gemini assistant error:", str(e))
+        print("Gemini error:", str(e))
 
         return jsonify({
-            "error": "Gemini assistant is currently unavailable"
-        }), 502
-
+            "error": "Failed to get response from Gemini",
+            "details": str(e)
+        }), 500
 
 # ======================================================================
 # HEALTH CHECK
