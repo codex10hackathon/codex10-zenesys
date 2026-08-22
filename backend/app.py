@@ -25,6 +25,9 @@ User flow:
     5. Delete machine
         DELETE /api/machines/<machine_id>
 
+    6. Ask Gemini maintenance assistant
+        POST /api/machines/<machine_id>/assistant
+
 The backend uses in-memory storage only.
 
 Expected model files:
@@ -50,6 +53,9 @@ import itertools
 import os
 import joblib
 import pandas as pd
+
+# Gemini-powered maintenance assistant
+from gemini_service import ask_maintenance_assistant
 
 app = Flask(__name__)
 CORS(app)
@@ -1076,6 +1082,78 @@ def delete_machine(
         "message":
             "Machine deleted successfully"
     }), 200
+
+
+# ======================================================================
+# POST /api/machines/<machine_id>/assistant
+# ======================================================================
+
+@app.route(
+    "/api/machines/<int:machine_id>/assistant",
+    methods=["POST"]
+)
+def ask_assistant(machine_id):
+
+    # --------------------------------------------------------------
+    # Find machine
+    # --------------------------------------------------------------
+
+    machine = machines.get(machine_id)
+
+    if not machine:
+        return jsonify({
+            "error": "Machine not found"
+        }), 404
+
+    # --------------------------------------------------------------
+    # Get user question
+    # --------------------------------------------------------------
+
+    data = request.get_json(
+        silent=True
+    ) or {}
+
+    question = data.get("question")
+
+    if (
+        not question
+        or not isinstance(question, str)
+        or not question.strip()
+    ):
+        return jsonify({
+            "error": "Question is required"
+        }), 400
+
+    # --------------------------------------------------------------
+    # Send machine context + user question to Gemini
+    # --------------------------------------------------------------
+
+    try:
+        answer = ask_maintenance_assistant(
+            machine=machine,
+            question=question.strip()
+        )
+
+        return jsonify({
+            "machine_id": machine_id,
+            "question": question.strip(),
+            "answer": answer,
+            "status": "success"
+        }), 200
+
+    except ValueError as e:
+
+        return jsonify({
+            "error": str(e)
+        }), 500
+
+    except Exception as e:
+
+        print("Gemini assistant error:", str(e))
+
+        return jsonify({
+            "error": "Gemini assistant is currently unavailable"
+        }), 502
 
 
 # ======================================================================
